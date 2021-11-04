@@ -5,17 +5,108 @@
  */
 package projeto.pkg2.view.home;
 
-/**
- *
- * @author jaine
- */
+import javax.swing.table.DefaultTableModel;
+import projeto.pkg2.core.function.EquilibrioCorrecaoCTC;
+
 public class Menu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Menu
-     */
+    EquilibrioCorrecaoCTC equilbrioCTC;
     public Menu() {
         initComponents();
+        
+        equilbrioCTC = new EquilibrioCorrecaoCTC();
+        double potassioSolo =  Double.parseDouble(txtPotassio.getText());
+        double calcioSolo = Double.parseDouble(txtCalcio.getText());
+        double magnesioSolo = Double.parseDouble(txtMagnesio.getText());
+        double HALSolo = Double.parseDouble(txtHAL.getText());
+        
+        this.CalculaValorIdeal();
+        this.PosCorrecao();       
+        double scmol = this.CalculaSCMOL(potassioSolo, calcioSolo, magnesioSolo );
+        double ctcMol = this.CalculaCTC(potassioSolo, calcioSolo, magnesioSolo, HALSolo);
+        
+        this.CalculaV(scmol, ctcMol);
+        
+        double moPer = CalculaMOPercentual();
+        this.CalculaCarbono(moPer);
+    }
+    
+    public void CalculaCarbono(double mo){
+         double carbono = equilbrioCTC.calculaCarbono(mo);
+         
+        String car = String.valueOf(carbono);
+
+        txtCarbono.setText(car);
+    }
+    
+    public double CalculaMOPercentual(){
+       double mo = Double.parseDouble(txtMO.getText());
+       double moPerc = equilbrioCTC.calculaMOPercentual(mo);
+       String moP = String.valueOf(moPerc);
+
+        txMOPerc.setText(moP);
+        return moPerc;
+    }
+    
+    public void CalculaV(double scmol, double ctcMol){
+        double vPercentual = equilbrioCTC.calculaVPercentual(scmol, ctcMol);
+         String vPer = String.valueOf(vPercentual);
+        txtV.setText(vPer);
+    }
+    
+    public double CalculaCTC(double potassioSolo, double calcioSolo, double magnesioSolo, double HALSolo){
+        double ctcMol = equilbrioCTC.calculaCTCCmol(potassioSolo, calcioSolo, magnesioSolo, HALSolo);
+        String CTCMOL = String.valueOf(ctcMol);
+        txCTCmol.setText(CTCMOL);
+        
+        return ctcMol;
+    }
+    
+    public double CalculaSCMOL(double potassioSolo, double calcioSolo, double magnesioSolo ) {
+       
+        double scmol = equilbrioCTC.calculaSCmol(potassioSolo, calcioSolo, magnesioSolo);
+        String SCMOL = String.valueOf(scmol);
+        txtScmol.setText(SCMOL);
+        
+        return scmol;
+    }
+    
+    
+    public void CalculaValorIdeal(){
+         int texturaSolo = Integer.parseInt(txtTextura.getText());
+         if(texturaSolo == 1 ){
+           txtFosforoIdeal.setText("9.0");
+           txtPotassioIdeal.setText("0.35");
+           txtCalcioIdeal.setText("6");
+           txtMagnesioIdeal.setText("1.5");
+           txtEnxofreIdeal.setText("9");
+         }
+       
+         else if(texturaSolo == 2) {
+           txtFosforoIdeal.setText("12");
+           txtPotassioIdeal.setText("0.25");
+           txtCalcioIdeal.setText("4");
+           txtMagnesioIdeal.setText("1");
+           txtEnxofreIdeal.setText("6");
+         }
+    }
+    
+    public void PosCorrecao(){
+      int profundidade = Integer.parseInt(txtProfundidade.getText());
+      double potassioSolo = Double.parseDouble(txtPotassio.getText());
+     
+
+      if(profundidade == 1){
+          txtFosforoCor.setText("0 a 10");
+      } else if(profundidade == 2){
+          txtFosforoCor.setText("0 a 20");
+      } else txtFosforoCor.setText("0");
+      
+      if(potassioSolo > 0.5){
+           String potSolo = String.valueOf(potassioSolo);
+            txtPotassioCor.setText(potSolo);
+      }
+         
     }
 
     /**
@@ -29,13 +120,53 @@ public class Menu extends javax.swing.JFrame {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        txtFosforo = new javax.swing.JTextField();
+        txtPotassio = new javax.swing.JTextField();
+        txtCalcio = new javax.swing.JTextField();
+        txtMagnesio = new javax.swing.JTextField();
+        txtEnxofre = new javax.swing.JTextField();
+        txtHAL = new javax.swing.JTextField();
+        txtAluminio = new javax.swing.JTextField();
+        javax.swing.JButton btnRecalcular = new javax.swing.JButton();
+        txtTalhão = new javax.swing.JTextField();
+        txtTextura = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        txtAluminio1 = new javax.swing.JTextField();
+        txtFosforoIdeal = new javax.swing.JTextField();
+        txtPotassioIdeal = new javax.swing.JTextField();
+        txtCalcioIdeal = new javax.swing.JTextField();
+        txtMagnesioIdeal = new javax.swing.JTextField();
+        txtEnxofreIdeal = new javax.swing.JTextField();
+        txtHALIdeal = new javax.swing.JTextField();
+        txtProfundidade = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txtFosforoCor = new javax.swing.JTextField();
+        txtPotassioCor = new javax.swing.JTextField();
+        txCTCmol = new javax.swing.JTextField();
+        txtScmol = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        txtV = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        txtCarbono = new javax.swing.JTextField();
+        txMOPerc = new javax.swing.JTextField();
+        txtMO = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFosforo = new javax.swing.JMenu();
         menuPotassio = new javax.swing.JMenu();
@@ -44,20 +175,6 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Fósforo (mg.dm³) (mehlich)", "Potássio (cmol)", "Cálcio (cmol)", "Magnésio (cmol)", "Enxofre (mg.dm³)", "Alumínio", "H + AL"
-            }
-        ));
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel1.setText("No solo:");
@@ -68,16 +185,253 @@ public class Menu extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel3.setText("Após correção:");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null}
-            },
-            new String [] {
-                "S cmol", "CTC mol", "V% atual"
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Potássio(cmol)");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Fósforo (mg.dm³)(mehlich)");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Magnésio(cmol)");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Calcio(cmol)");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Enxofre(mg.dm³)");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel9.setText("Alumínio");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("H + AL");
+
+        txtFosforo.setText("8.59");
+        txtFosforo.setToolTipText("");
+        txtFosforo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFosforoActionPerformed(evt);
             }
-        ));
-        jTable2.setRowHeight(30);
-        jScrollPane2.setViewportView(jTable2);
+        });
+
+        txtPotassio.setText("0.15");
+        txtPotassio.setToolTipText("");
+        txtPotassio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPotassioActionPerformed(evt);
+            }
+        });
+
+        txtCalcio.setText("5.76");
+        txtCalcio.setToolTipText("");
+        txtCalcio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCalcioActionPerformed(evt);
+            }
+        });
+
+        txtMagnesio.setText("1.63");
+        txtMagnesio.setToolTipText("");
+        txtMagnesio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMagnesioActionPerformed(evt);
+            }
+        });
+
+        txtEnxofre.setText("3.67");
+        txtEnxofre.setToolTipText("");
+        txtEnxofre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEnxofreActionPerformed(evt);
+            }
+        });
+
+        txtHAL.setText("5.35");
+        txtHAL.setToolTipText("");
+        txtHAL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHALActionPerformed(evt);
+            }
+        });
+
+        txtAluminio.setText("0");
+        txtAluminio.setToolTipText("");
+        txtAluminio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAluminioActionPerformed(evt);
+            }
+        });
+
+        btnRecalcular.setText("Recalcular");
+        btnRecalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecalcularActionPerformed(evt);
+            }
+        });
+
+        txtTalhão.setText("1");
+        txtTalhão.setToolTipText("");
+        txtTalhão.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTalhãoActionPerformed(evt);
+            }
+        });
+
+        txtTextura.setText("1");
+        txtTextura.setToolTipText("");
+        txtTextura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTexturaActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText("Textura de solo");
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setText("Talhão");
+
+        txtAluminio1.setText("0");
+        txtAluminio1.setToolTipText("");
+        txtAluminio1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAluminio1ActionPerformed(evt);
+            }
+        });
+
+        txtFosforoIdeal.setToolTipText("");
+        txtFosforoIdeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFosforoIdealActionPerformed(evt);
+            }
+        });
+
+        txtPotassioIdeal.setToolTipText("");
+        txtPotassioIdeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPotassioIdealActionPerformed(evt);
+            }
+        });
+
+        txtCalcioIdeal.setToolTipText("");
+        txtCalcioIdeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCalcioIdealActionPerformed(evt);
+            }
+        });
+
+        txtMagnesioIdeal.setToolTipText("");
+        txtMagnesioIdeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMagnesioIdealActionPerformed(evt);
+            }
+        });
+
+        txtEnxofreIdeal.setToolTipText("");
+        txtEnxofreIdeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEnxofreIdealActionPerformed(evt);
+            }
+        });
+
+        txtHALIdeal.setToolTipText("");
+        txtHALIdeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHALIdealActionPerformed(evt);
+            }
+        });
+
+        txtProfundidade.setText("20");
+        txtProfundidade.setToolTipText("");
+        txtProfundidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProfundidadeActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel13.setText("Profundidade Solo");
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel14.setText("cm");
+
+        txtFosforoCor.setToolTipText("");
+        txtFosforoCor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFosforoCorActionPerformed(evt);
+            }
+        });
+
+        txtPotassioCor.setToolTipText("");
+        txtPotassioCor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPotassioCorActionPerformed(evt);
+            }
+        });
+
+        txCTCmol.setToolTipText("");
+        txCTCmol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txCTCmolActionPerformed(evt);
+            }
+        });
+
+        txtScmol.setToolTipText("");
+        txtScmol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtScmolActionPerformed(evt);
+            }
+        });
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel15.setText("Scmol");
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel16.setText("CTCmol");
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel17.setText("V% atual");
+
+        txtV.setToolTipText("");
+        txtV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtVActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel18.setText("M.O.%");
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel19.setText("Carbono");
+
+        txtCarbono.setToolTipText("");
+        txtCarbono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCarbonoActionPerformed(evt);
+            }
+        });
+
+        txMOPerc.setToolTipText("");
+        txMOPerc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txMOPercActionPerformed(evt);
+            }
+        });
+
+        txtMO.setText("30.7");
+        txtMO.setToolTipText("");
+        txtMO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMOActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel20.setText("M.O (g.dm³)");
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel21.setText("Teor ideal de M.O.: 3,0 a 4,0%");
 
         menuFosforo.setText("Fósforo");
         jMenuBar1.add(menuFosforo);
@@ -95,40 +449,299 @@ public class Menu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel12)
+                            .addComponent(txtTalhão, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(txtTextura, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtProfundidade, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel14))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(294, 294, 294)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(627, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5)
+                                        .addComponent(txtFosforo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(16, 16, 16)
+                                    .addComponent(jLabel2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtFosforoIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtFosforoCor, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(80, 80, 80)))
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(txtPotassio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPotassioIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(txtCalcio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCalcioIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(46, 46, 46)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txtMagnesio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMagnesioIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(40, 40, 40)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(txtEnxofre, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtEnxofreIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtAluminio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9)
+                                    .addComponent(txtAluminio1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtPotassioCor, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRecalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtHALIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtHAL, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel21)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel20)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtMO, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel15)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtScmol, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txMOPerc, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel16)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txCTCmol, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(79, 79, 79)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel17)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtV, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel19)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtCarbono, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(226, 226, 226)
-                .addComponent(jLabel1)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTalhão, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTextura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtProfundidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14))))
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel7)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel9))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addContainerGap(239, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtFosforo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPotassio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCalcio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMagnesio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEnxofre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAluminio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtHAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFosforoIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPotassioIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCalcioIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMagnesioIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEnxofreIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAluminio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtHALIdeal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtFosforoCor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPotassioCor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txCTCmol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17)
+                            .addComponent(txtV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15)
+                            .addComponent(txtScmol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(btnRecalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txMOPerc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel19)
+                    .addComponent(txtCarbono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20)
+                    .addComponent(txtMO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel21)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtFosforoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFosforoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFosforoActionPerformed
+
+    private void txtPotassioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPotassioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPotassioActionPerformed
+
+    private void txtCalcioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCalcioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCalcioActionPerformed
+
+    private void txtMagnesioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMagnesioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMagnesioActionPerformed
+
+    private void txtEnxofreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEnxofreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEnxofreActionPerformed
+
+    private void txtHALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHALActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHALActionPerformed
+
+    private void txtAluminioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAluminioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAluminioActionPerformed
+
+    private void btnRecalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecalcularActionPerformed
+            this.CalculaValorIdeal();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRecalcularActionPerformed
+
+    private void txtTalhãoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTalhãoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTalhãoActionPerformed
+
+    private void txtTexturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTexturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTexturaActionPerformed
+
+    private void txtAluminio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAluminio1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAluminio1ActionPerformed
+
+    private void txtFosforoIdealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFosforoIdealActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFosforoIdealActionPerformed
+
+    private void txtPotassioIdealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPotassioIdealActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPotassioIdealActionPerformed
+
+    private void txtCalcioIdealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCalcioIdealActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCalcioIdealActionPerformed
+
+    private void txtMagnesioIdealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMagnesioIdealActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMagnesioIdealActionPerformed
+
+    private void txtEnxofreIdealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEnxofreIdealActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEnxofreIdealActionPerformed
+
+    private void txtHALIdealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHALIdealActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHALIdealActionPerformed
+
+    private void txtProfundidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProfundidadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtProfundidadeActionPerformed
+
+    private void txtFosforoCorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFosforoCorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFosforoCorActionPerformed
+
+    private void txtPotassioCorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPotassioCorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPotassioCorActionPerformed
+
+    private void txCTCmolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txCTCmolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txCTCmolActionPerformed
+
+    private void txtScmolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtScmolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtScmolActionPerformed
+
+    private void txtVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtVActionPerformed
+
+    private void txtCarbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCarbonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCarbonoActionPerformed
+
+    private void txMOPercActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txMOPercActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txMOPercActionPerformed
+
+    private void txtMOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMOActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMOActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,17 +780,56 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JMenu menuCalcioMagnesio;
     private javax.swing.JMenu menuFosforo;
     private javax.swing.JMenu menuPotassio;
+    private javax.swing.JTextField txCTCmol;
+    private javax.swing.JTextField txMOPerc;
+    private javax.swing.JTextField txtAluminio;
+    private javax.swing.JTextField txtAluminio1;
+    private javax.swing.JTextField txtCalcio;
+    private javax.swing.JTextField txtCalcioIdeal;
+    private javax.swing.JTextField txtCarbono;
+    private javax.swing.JTextField txtEnxofre;
+    private javax.swing.JTextField txtEnxofreIdeal;
+    private javax.swing.JTextField txtFosforo;
+    private javax.swing.JTextField txtFosforoCor;
+    private javax.swing.JTextField txtFosforoIdeal;
+    private javax.swing.JTextField txtHAL;
+    private javax.swing.JTextField txtHALIdeal;
+    private javax.swing.JTextField txtMO;
+    private javax.swing.JTextField txtMagnesio;
+    private javax.swing.JTextField txtMagnesioIdeal;
+    private javax.swing.JTextField txtPotassio;
+    private javax.swing.JTextField txtPotassioCor;
+    private javax.swing.JTextField txtPotassioIdeal;
+    private javax.swing.JTextField txtProfundidade;
+    private javax.swing.JTextField txtScmol;
+    private javax.swing.JTextField txtTalhão;
+    private javax.swing.JTextField txtTextura;
+    private javax.swing.JTextField txtV;
     // End of variables declaration//GEN-END:variables
 }
